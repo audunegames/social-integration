@@ -24,6 +24,10 @@ namespace Audune.Social
     public static SocialSystem current => _current;
     
     
+    // Internal state
+    private readonly List<SocialProvider> _initializedSocialProviders = new List<SocialProvider>();
+    
+    
     /// <summary>
     /// Returns all social providers of the system.
     /// </summary>
@@ -36,18 +40,22 @@ namespace Audune.Social
     /// </summary>
     public IEnumerable<SocialProvider> enabledSocialProviders => socialProviders
       .Where(socialProvider => socialProvider.executionMode.ShouldExecute());
-    
+
     /// <summary>
     /// Returns the initialized social providers of the system.
     /// </summary>
-    public IEnumerable<SocialProvider> initializedSocialProviders => enabledSocialProviders
-      .Where(socialProvider => socialProvider.isInitialized);
+    public IEnumerable<SocialProvider> initializedSocialProviders => _initializedSocialProviders;
     
     /// <summary>
     /// Returns if any of the social providers of the system are initialized.
     /// </summary>
     public bool isInitialized => initializedSocialProviders.Any();
     
+    
+    /// <summary>
+    /// Event that is invoked when a social provider has been initialized.
+    /// </summary>
+    public event SocialProviderInitializedEvent onSocialProviderInitialized;
     
     /// <inheritdoc/>
     public event GameOverlayActivatedEvent onGameOverlayActivated;
@@ -98,11 +106,25 @@ namespace Audune.Social
     // Update event
     private void Update()
     {
-      // Iterate over the initialized social providers
-      foreach (var socialProvider in initializedSocialProviders)
+      // Iterate over the enabled social providers
+      foreach (var socialProvider in enabledSocialProviders)
       {
-        // Update the social provider
-        socialProvider.OnUpdateSocialProvider();
+        // Check if the social provider is initialized
+        if (socialProvider.isInitialized)
+        {
+          // Check if the social provider just has been initialized
+          if (!_initializedSocialProviders.Contains(socialProvider))
+          {
+            // Add the social provider to the initialized social providers
+            _initializedSocialProviders.Add(socialProvider);
+
+            // Invoke the social provider initialized event
+            onSocialProviderInitialized?.Invoke(socialProvider);
+          }
+
+          // Update the social provider
+          socialProvider.OnUpdateSocialProvider();
+        }
       }
     }
     #endregion
@@ -146,6 +168,12 @@ namespace Audune.Social
     #endregion
     
     #region Event handlers
+    // Social provider initialized handler
+    private void OnSocialProviderInitialized(SocialProvider socialProvider)
+    {
+      onSocialProviderInitialized?.Invoke(socialProvider);
+    }
+    
     // Game overlay activated handler
     private void OnGameOverlayActivated(IGameOverlayProvider provider, bool isActive)
     {
