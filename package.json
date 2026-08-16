@@ -1,0 +1,19 @@
+{
+  "name": "com.audune.social",
+  "displayName": "Social Integration",
+  "version": "0.1.0",
+  "unity": "2022.3",
+  "description": "Unified integration of social SDKs in your game.",
+  "documentationUrl": "https://github.com/audunegames/social-integration",
+  "changelogUrl": "https://github.com/audunegames/social-integration/tree/master/CHANGELOG.md",
+  "licensesUrl": "https://www.gnu.org/licenses/lgpl-3.0.html",
+  "license": "LGPL-3.0-or-later",
+  "author": {
+    "name": "Audune",
+    "email": "support@audune.com",
+    "url": "https://audune.com/"
+  },
+  "dependencies": {
+    "com.cysharp.unitask": "2.5.11"
+  }
+}
