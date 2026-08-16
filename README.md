@@ -4,6 +4,9 @@
 
 Unified integration of social SDKs in your game. Supports getting the current user, setting rich presence, and handling game overlays. Separate social providers are installed using separate packages:
 
+* [Discord Social SDK](https://github.com/audunegames/discord-social-integration-provider)
+* [Steamworks SDK (through Steamworks .NET)](https://github.com/audunegames/steam-social-integration-provider)
+
 See the [wiki](https://github.com/audunegames/social-integration/wiki) of the repository to get started with the package.
 
 ## Features
