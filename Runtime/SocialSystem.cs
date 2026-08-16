@@ -112,10 +112,11 @@ namespace Audune.Social
     /// Returns all current users from the social providers that support it.
     /// </summary>
     /// <returns>All current users from the social providers that support it.</returns>
-    public async UniTask<IReadOnlyList<IUser>> GetCurrentUsers()
+    public async UniTask<IEnumerable<IUser>> GetCurrentUsers()
     {
-      return await UniTask.WhenAll(initializedSocialProviders.OfType<IUserProvider>()
+      var currentUsers = await UniTask.WhenAll(initializedSocialProviders.OfType<IUserProvider>()
         .Select(socialProvider => socialProvider.GetCurrentUser()));
+      return currentUsers.Where(user => user != null);
     }
     
     /// <inheritdoc/>
