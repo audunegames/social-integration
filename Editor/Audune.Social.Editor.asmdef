@@ -1,0 +1,24 @@
+{
+    "name": "Audune.Social.Editor",
+    "rootNamespace": "Audune.Social.Editor",
+    "references": [
+        "GUID:4b110b78096576840988dc74b2126dd7",
+        "GUID:241edfc528a436d4d8ad77e50bc4b164",
+        "GUID:99872d1abb4e50f41b0c10dfc418a795",
+        "GUID:8d3eaed832bf78046bfb9b4fc4d6d44e",
+        "GUID:cae9ba75d7e39b34f8eed004d047cc0e",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:4129704b5a1a13841ba16f230bf24a57"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

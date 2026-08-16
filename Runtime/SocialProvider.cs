@@ -8,6 +8,12 @@ namespace Audune.Social
   [RequireComponent(typeof(SocialSystem))]
   public abstract class SocialProvider : MonoBehaviour
   {
+    // Variables
+    [SerializeField, Tooltip("The priority of the social provider")]
+    private int _priority;
+    [SerializeField, Tooltip("The execution mode of the social provider")]
+    private ExecutionMode _executionMode = ExecutionMode.Always;
+    
     // Internal state
     private SocialSystem _socialSystem;
     
@@ -16,6 +22,16 @@ namespace Audune.Social
     /// Returns the social system this social provider is connected to.
     /// </summary>
     public SocialSystem socialSystem => _socialSystem;
+    
+    /// <summary>
+    /// Return the priority of the social provider.
+    /// </summary>
+    public int priority => _priority;
+
+    /// <summary>
+    /// Return the execution mode of the social provider.
+    /// </summary>
+    public ExecutionMode executionMode => _executionMode;
     
     /// <summary>
     /// Returns if the social provider is initialized.

@@ -14,6 +14,8 @@
     "url": "https://audune.com/"
   },
   "dependencies": {
+    "com.audune.utils.types": "1.0.8",
+    "com.audune.utils.unityeditor": "2.0.9",
     "com.cysharp.unitask": "2.5.11"
   }
 }

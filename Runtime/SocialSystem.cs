@@ -8,6 +8,7 @@ namespace Audune.Social
   /// <summary>
   /// Class that defines the social system.
   /// </summary>
+  [AddComponentMenu("Audune/Social/Social System")]
   [DefaultExecutionOrder(10)]
   public sealed class SocialSystem : MonoBehaviour,
     IUserProvider,
@@ -23,19 +24,24 @@ namespace Audune.Social
     public static SocialSystem current => _current;
     
     
-    // References resolved at runtime
-    private IReadOnlyList<SocialProvider> _socialProviders;
-    
-    
     /// <summary>
-    /// Returns the registered social providers of the system.
+    /// Returns all social providers of the system.
     /// </summary>
-    public IEnumerable<SocialProvider> socialProviders => _socialProviders;
+    public IEnumerable<SocialProvider> socialProviders => GetComponents<SocialProvider>()
+      .OrderBy(socialProvider => socialProvider.priority);
+
+
+    /// <summary>
+    /// Returns the enabled social providers of the system.
+    /// </summary>
+    public IEnumerable<SocialProvider> enabledSocialProviders => socialProviders
+      .Where(socialProvider => socialProvider.executionMode.ShouldExecute());
     
     /// <summary>
     /// Returns the initialized social providers of the system.
     /// </summary>
-    public IEnumerable<SocialProvider> initializedSocialProviders => _socialProviders.Where(provider => provider.enabled && provider.isInitialized);
+    public IEnumerable<SocialProvider> initializedSocialProviders => enabledSocialProviders
+      .Where(socialProvider => socialProvider.isInitialized);
     
     /// <summary>
     /// Returns if any of the social providers of the system are initialized.
@@ -55,16 +61,13 @@ namespace Audune.Social
         _current = this;
       else
         Destroy(gameObject);
-      
-      // Resolve the references
-      _socialProviders = GetComponents<SocialProvider>();
     }
     
     // OnEnable event
     private void OnEnable()
     {
-      // Iterate over the social providers
-      foreach (var socialProvider in _socialProviders)
+      // Iterate over the enabled social providers
+      foreach (var socialProvider in enabledSocialProviders)
       {
         // Enable the social provider
         socialProvider.OnEnableSocialProvider();
@@ -78,8 +81,8 @@ namespace Audune.Social
     // OnDisable event 
     private void OnDisable()
     {      
-      // Iterate over the social providers
-      foreach (var socialProvider in _socialProviders)
+      // Iterate over the enabled social providers
+      foreach (var socialProvider in enabledSocialProviders)
       {
         // Disable the social provider
         socialProvider.OnDisableSocialProvider();
