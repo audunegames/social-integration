@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Audune.Social
   /// <summary>
   /// Interface that defines a user in a social provider.
   /// </summary>
-  public interface IUser
+  public interface IUser : IEquatable<IUser>
   {
     /// <summary>
     /// Returns the source social provider of the user.
@@ -28,6 +29,16 @@ namespace Audune.Social
     /// Returns the status of the user.
     /// </summary>
     public UserStatus status { get; }
+    
+    /// <summary>
+    /// Returns if the user is currently in a game.
+    /// </summary>
+    public bool isPlaying { get; }
+    
+    /// <summary>
+    /// Returns if the user is currently in this game.
+    /// </summary>
+    public bool isPlayingThisGame { get; }
     
     
     /// <summary>
