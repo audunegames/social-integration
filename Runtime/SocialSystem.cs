@@ -11,7 +11,7 @@ namespace Audune.Social
   [AddComponentMenu("Audune/Social/Social System")]
   [DefaultExecutionOrder(10)]
   public sealed class SocialSystem : MonoBehaviour,
-    IUserProvider,
+    IRelationshipProvider,
     IIRichPresenceProvider,
     IGameOverlayProvider
   {
@@ -129,23 +129,54 @@ namespace Audune.Social
     }
     #endregion
     
-    #region User provider implementation
+    #region Relationship provider implementation
     /// <summary>
     /// Returns all current users from the social providers that support it.
     /// </summary>
     /// <returns>All current users from the social providers that support it.</returns>
-    public async UniTask<IEnumerable<IUser>> GetCurrentUsers()
+    public async UniTask<IReadOnlyCollection<IUser>> GetCurrentUsers()
     {
-      var currentUsers = await UniTask.WhenAll(initializedSocialProviders.OfType<IUserProvider>()
+      var allCurrentUsers = await UniTask.WhenAll(initializedSocialProviders
+        .OfType<IUserProvider>()
         .Select(socialProvider => socialProvider.GetCurrentUser()));
-      return currentUsers.Where(user => user != null);
+      
+      return allCurrentUsers
+        .Where(user => user != null)
+        .ToList();
     }
     
     /// <inheritdoc/>
     public async UniTask<IUser> GetCurrentUser()
     {
-      var currentUsers = await GetCurrentUsers();
-      return currentUsers.FirstOrDefault();
+      var allCurrentUsers = await UniTask.WhenAll(initializedSocialProviders
+        .OfType<IUserProvider>()
+        .Select(socialProvider => socialProvider.GetCurrentUser()));
+      
+      return allCurrentUsers
+        .FirstOrDefault(user => user != null);
+    }
+
+    /// <inheritdoc/>
+    public async UniTask<IReadOnlyCollection<Relationship>> GetCurrentUserRelationships()
+    {
+      var allRelationships = await UniTask.WhenAll(initializedSocialProviders
+        .OfType<IRelationshipProvider>()
+        .Select(socialProvider => socialProvider.GetCurrentUserRelationships()));
+      
+      return allRelationships.
+        SelectMany(relationships => relationships)
+        .Where(r => r.relationshipType != RelationshipType.None)
+        .ToList();
+    }
+
+    /// <inheritdoc/>
+    public async UniTask<RelationshipType> GetCurrentUserRelationshipType(IUser otherUser)
+    {
+      var allRelationshipTypes = await UniTask.WhenAll(initializedSocialProviders.OfType<IRelationshipProvider>()
+        .Select(socialProvider => socialProvider.GetCurrentUserRelationshipType(otherUser)));
+      
+      return allRelationshipTypes
+        .FirstOrDefault(relationshipType => relationshipType == RelationshipType.None);
     }
     #endregion
     
