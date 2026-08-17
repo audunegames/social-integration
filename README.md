@@ -12,7 +12,7 @@ See the [wiki](https://github.com/audunegames/social-integration/wiki) of the re
 ## Features
 
 * A social system component that handles social providers that implement game SDKs for social networks.
-* Get the current user, including status and avatar, for all social providers.
+* Get the current user, including status and avatar, and their relationships for all social providers.
 * Set rich presence for all social providers.
 * Handle activation of game overlays for all social providers.
 
