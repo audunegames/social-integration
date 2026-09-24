@@ -39,7 +39,7 @@ namespace Audune.Social
     /// Returns the enabled social providers of the system.
     /// </summary>
     public IEnumerable<SocialProvider> enabledSocialProviders => socialProviders
-      .Where(socialProvider => socialProvider.executionMode.ShouldExecute());
+      .Where(socialProvider => socialProvider.enabled && socialProvider.executionMode.ShouldExecute());
 
     /// <summary>
     /// Returns the initialized social providers of the system.
@@ -199,12 +199,6 @@ namespace Audune.Social
     #endregion
     
     #region Event handlers
-    // Social provider initialized handler
-    private void OnSocialProviderInitialized(SocialProvider socialProvider)
-    {
-      onSocialProviderInitialized?.Invoke(socialProvider);
-    }
-    
     // Game overlay activated handler
     private void OnGameOverlayActivated(IGameOverlayProvider provider, bool isActive)
     {
