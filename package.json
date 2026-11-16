@@ -1,7 +1,7 @@
 {
   "name": "com.audune.social",
   "displayName": "Social Integration",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "unity": "2022.3",
   "description": "Unified integration of social SDKs in your game.",
   "documentationUrl": "https://github.com/audunegames/social-integration",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "com.audune.utils.types": "1.0.8",
-    "com.audune.utils.unityeditor": "2.0.9",
+    "com.audune.utils.unityeditor": "2.0.10",
     "com.cysharp.unitask": "2.5.11"
   }
 }
